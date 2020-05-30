@@ -1,146 +1,107 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      
-        <title>ナレッジシェア</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
-*{
-   margin:0;
-   padding:0;
-}
-h1{
-    
-}
-li{
-   list-style:none; 
-}
+@extends('layouts.app')
 
-@media (min-width: 768px){
-header:after{content: "";
-            display: block;
-            clear: both;}
-.header-left{float: left;
-            width: 50%;}
-.navbar{float:left;
-        width: 50%;
-        display:block;
-        
-}
-}
-header{background-color:#DCDCDC;}
-.header-left h1 a{
-    margin:0;
-    margin-left:30%;
-    text-decoration: none;
-    color:#111111;
-    font-family: 'Paytone One', sans-serif;
-    font-weight: normal;
-    font-size:30px;    
-}
-img{
-    
-    max-width: 100%;
-    height:auto;
-}
-
-.navbar ul{
-    margin:0;
-    padding: 0;
-    list-style: none;
-}
-.navbar li a{
-    margin-left:70%;
-    display:block;
-    text-decoration: none;
-    color:#111111;
-    font-size:15px; 
-    padding:5px;
-}
-.navbar li a:hover {background-color: #eeeeee}
-/*.navbar ul:after{*/
-/*    content:"";*/
-/*    display:block;*/
-/*    clear:both;*/
-/*}*/
-/*.navbar li {*/
-/*    float:left;*/
-/*    width:auto;*/
-/*}*/
-main:after{content:""; display: block; clear:both;}
-.right{float:left; width:20%;}
-.center{float:left; width:60%;}
-.left{float:left; width:20%;}
-
-main h2{margin-top:0;
-        margin-bottom:10px;
-        font-size:26px;
-        border-bottom: solid silver;}
-main p{color:gray;
-       font-size:14px;
-       margin-top:0;
-       margin-bottom:10px;}
-main h3{margin-top:0;
-        margin-bottom:10px;
-        font-size: 20px;
-        font-weight: bold;
-}
-main h4{margin-top:0;
-        padding-bottom:20px;
-        border-bottom: solid silver;
-        font-size: 18px;
-        font-weight: lighter; 
-}
-</style>
-    </head>
-    <body>    
-        <header>
-            <div class="header-left">
-              <h1><a href="#">ナレッジシェア</a></h1>
-            </div>
-            <div class="navbar">
-              @if (Auth::check())
-              <ul>
-                  <li><a> {!! link_to_route('knowledges.create', 'プラン作成') !!}</a></li>
-                  <li><a href="knowledges.mypage"></a></li>
-                  <li><a>{!! link_to_route('logout.get', 'ログアウト') !!}</a></li>
-                
-              </ul> 
-              @else
-              <ul>
-                  <li><a> {!! link_to_route('login', 'ログイン', [], ['class' => 'btn btn-primary']) !!} </a></li>
-                  <li><a>{!! link_to_route('signup.get', '新規登録', [], ['class' => 'btn btn-lg btn-primary']) !!}</a></li>
-              </ul>
-              @endif
-            </div>
+@section('content')
+    <style>
+        .row{
+            padding:10px;
+            border:solid 2px lightgray;
+            background:lightgray;
+            box-shadow: 3px 6px 2px gray;
+        }
+        .plan{
+        box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.5);
+          margin: 10px 0;
+          padding: 10px 5px;
+          border: 1px solid #ccc;
+          background-color: #ffffff;
+        }
+        .name{
+            margin-bottom: 10px;
+            color:white;
+            font-size:10px;
             
-        </header>
-        
-        <main>
-            <div class="left">a</div>
-            <div class="center">
+        }
+        .name a{
+            background-color:rgba(191, 63, 129, 1);
+            color: white;
+            border:solid 4px rgba(191, 63, 129, 1);
+            border-radius:4px;
+        }
+        h2 {
+            color:black;
+            font-weight:normal;
+            text-align:center;
+             font-size:40px;
+        }
+        h3 {
+            text-align:center;
+        }
+        h3 a{
+            color:black;
+            font-weight:bold;
+            text-align:center;
+            font-size:24px;
+        }
+        h3 a:hover{
+            text-decoration: none;
+            color:black;
+        }
+        .form-detail{
+            box-sizing: border-box;
+            display: block;
+            margin-top: 0em;
+            background:#f1f1f1;
+            border-radius:4px;
+            border-color:#e0e0e0;
+            text-align:center;
+            font-size:16px;
+            padding:8px 0;
+        }
+        .form-detail:hover{
+            background-color: lightgray;
+        }
+        .form-detail a:hover{
+            text-decoration:none;
+        }
+        .detail{
+            
+        }
+        .form-detail a{
+            color:#333333;
+            display: block;
+        }
+        h4{
+           color:black;
+            font-weight:normal;
+            text-align:left;
+            font-size:16px;
+            
+        }
+        button.btn{
+           padding:5px 160px;
+        }
+        .mousikomi{
+             text-align: center;
+        }
+       
+    </style>
+    <div class="row">    
+        <div class="center">
             <h2>プラン一覧</h2>
             @if (count($knowledges) > 0)
                 @foreach ($knowledges as $knowledge)
                     <div class="plan"> 
-                        <h3>{!! link_to_route('knowledges.show', $knowledge->title, ['id' => $knowledge->id]) !!}</h3>
-                        <p>分類</p>
+                        <h3><a>{!! link_to_route('knowledges.show', $knowledge->title, ['knowledge_id' => $knowledge->knowledge_id]) !!}</a></h3>
+                        
                         <h4>{{ $knowledge->content }}</h4>
-                        <p>{{  $knowledge->user_id  }}</p>
+                        <div class="name"><a>{{  $knowledge->user->name."さんのプランです"  }}</a></div>
+                        <div class="form-detail">{!! link_to_route('knowledges.show', '詳細をみる', ['knowledge_id' => $knowledge->knowledge_id] ) !!}</div>
                     </div>
                 @endforeach
             @endif
-            {{ $knowledges->links('pagination::bootstrap-4') }}
-            
-            </div>
-            <div class="right">b</div>
-        </main>
+        </div>
         
-         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-        <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"></script>
-    </body>
+    </div>
+    
+@endsection
+        

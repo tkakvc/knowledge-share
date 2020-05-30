@@ -1,151 +1,155 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      
-        <title>ナレッジシェア</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
-*{
-   margin:0;
-   padding:0;
-}
-h1{
-    
-}
-li{
-   list-style:none; 
-}
+@extends('layouts.app')
 
-@media (min-width: 768px){
-header:after{content: "";
-            display: block;
-            clear: both;}
-.header-left{float: left;
-            width: 50%;}
-.navbar{float:left;
-        width: 50%;
-        
-}
-}
-header{background-color:#DCDCDC;}
-.header-left h1 a{
-    margin:0;
-    margin-left:30%;
-    text-decoration: none;
-    color:#111111;
-    font-family: 'Paytone One', sans-serif;
-    font-weight: normal;
-    font-size:30px;    
-}
-img{
-    
-    max-width: 100%;
-    height:auto;
-}
-
-.navbar ul{
-    margin:0;
-    padding: 0;
-    list-style: none;
-}
-.navbar li a{
-    margin-left:70%;
-    display:block;
-    text-decoration: none;
-    color:#111111;
-    font-size:15px; 
-    padding:5px;
-}
-.navbar li a:hover {background-color: #eeeeee}
-/*.navbar ul:after{*/
-/*    content:"";*/
-/*    display:block;*/
-/*    clear:both;*/
-/*}*/
-/*.navbar li {*/
-/*    float:left;*/
-/*    width:auto;*/
-/*}*/
-main:after{content:""; display: block; clear:both;}
-.right{float:left; width:20%;}
-.center{float:left; width:60%;}
-.left{float:left; width:20%;}
-
-main h2{margin-top:0;
-        margin-bottom:10px;
-        font-size:26px;
-        border-bottom: solid silver;}
-main p{color:gray;
-       font-size:14px;
-       margin-top:0;
-       margin-bottom:10px;}
-main h3{margin-top:0;
-        margin-bottom:10px;
-        font-size: 20px;
-        font-weight: bold;
-}
-main h4{margin-top:0;
-        padding-bottom:20px;
-        border-bottom: solid silver;
-        font-size: 18px;
-        font-weight: lighter; 
-}
-</style>
-    </head>
-    <body>    
-        <header>
-            <div class="header-left">
-              <h1><a href="#">ナレッジシェア</a></h1>
-            </div>
-            <div class="navbar">
-              <ul>
-                  <li> {!! link_to_route('knowledges.create', 'プラン作成', [], ['class' => 'btn btn-primary']) !!}</li>
-                  <li><a href="#">マイページ</a></li>
-                  <li><a href="#">ログイン</a></li>
-                  <li><a href="#">新規登録</a></li>
-
-              </ul>  
-            </div>
+@section('content')
+    <style>
+        h2{
+            color:white;
+            font-weight:normal;
+            text-align:center;
+        }
+        h2 a{
+            padding:0 40px;
+            background:#44af35;
+        }
+        h3{
+            color: rgba(0, 11, 11, 0.74);
+            font-weight:bold;
+            text-align:center;
+            font-size:24px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        h3 a{
             
-        </header>
+            color:rgba(0, 11, 11, 0.74);
+        }
         
-        <main>
-            <div class="left">a</div>
-            <div class="center">
-            <h2>プラン詳細ページ</h2>
-                
-                    <div class="plan"> 
-                        <h3>{{ $knowledge->title }}</h3>
-                        <p>分類</p>
-                        <h4>
-                            {{ $knowledge->content }}
-                         <p> {{  "さん" }} </p>
-                         {!! Form::open(['route' => ['request_plan.store']]) !!}
-                         {{Form::hidden('id', $knowledge->id)}}
-            {!! Form::submit('申し込む', ['class' => "btn btn-primary btn-block"]) !!}
-        {!! Form::close() !!}
+        h4{
+           color:black;
+            font-weight:normal;
+            text-align:left;
+            font-size:18px;
+            margin-bottom: 20px;
+        }
+        .btn-secondary{
+           padding:5px 160px;
+           
+        }
+        
+        .btn-secondary:hover{
+            background:rgba(171, 43, 109, 0.69);
+        }
+        .mousikomi{
+             text-align: center;
+        }
+        .edit{
+            text-align: center;
+            padding-bottom:30px;
+        }
+        .delete{
+            text-align: center;
+        }
+        .request_message{
+          padding:10px 150px 10px;
+          margin-top:20px;
+          margin-bottom:10px;  
+          text-align: center;
+          font-weight: bold;        
+          color: rgba(0, 11, 11, 0.74);
+          font-size:24px;
+          border-top:solid 6px silver;
+      }
+      .detail-box{
+          padding:10px;
+          border:solid 2px lightgray;
+          border-radius:4px;
+          box-shadow: 3px 3px 2px gray;
+          background:lightgray;
+          
+      }
+      .plan-box{
+            box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.5);
+            margin: 10px 0;
+            padding: 10px 5px;
+            border: 4px solid rgba(17, 132, 212, 0.47);
+            border-radius: 6px;
+            background-color: #f2f2f2;
+      }
+      .name{
+            margin-bottom: 10px;
+            color:white;
+            font-size:10px;
+            
+        }
+        .name a{
+            background-color: rgba(191, 63, 129, 0.89);
+            color: white;
+            border:solid 4px rgba(191, 63, 129, 0.89);
+            border-radius:4px;
+        }
+        p{
+             border-left: inset 4px rgb(255, 10, 222);
+             margin-top:20px;
+        }
+    </style>
+        
+       <div class="center">
+           <div class="detail-box">
+            
+               <div class="plan-box"> 
+                <h3><a>{{ $knowledge->title }}</a></h3>
+                    
+                <h4>{!! nl2br($knowledge->content) !!}</h4>
+                <div class="name"><a>{{  $knowledge->user->name."さんのプランです"  }}</a></div>
+                </div> 
+                {{-- 自分以外の人のプランの場合 --}}     
+                     
+                         @if($user->id == $knowledge->user_id)
+                     {{-- リクエストされていないプランである場合 --}}
+                         @elseif ($knowledge->user_id != $user->id && is_null($request_plan))
+                             {!! Form::open(['route' => ['request_plan.store']]) !!}
+                                 {{Form::hidden('knowledge_id', $knowledge->knowledge_id)}}
+                                 <div class="form-group">
+                                    <div class="request_message">{!! Form::label('request_message','メッセージを入力し申込む' )!!}</div>
+                                    <a>{!! Form::textarea('request_message',null,['class' => 'form-control']) !!}</a>
+                                </div>
+                                 <div class="mousikomi">{!! Form::submit('申込む', ['class' => 'btn btn-secondary']) !!}</div>
+                                 
+                             {!!Form::close() !!}
                          
-                        </h4>
-                        
-             
-                        
-                        {!! link_to_route('knowledges.edit', 'このプランを編集', ['id' => $knowledge->id], ['class' => 'btn btn-light']) !!}
-                        {!! Form::model($knowledge, ['route' => ['knowledges.destroy', $knowledge->id], 'method' => 'delete']) !!}
-                            {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
+                     {{-- リクエストしたプランのうち、承認待ちである場合 --}}
+                         @elseif($request_plan->request_user_id == $user->id && $request_plan->plan_status == "pending" )
+                             <p>　申込み済です</p>
+                         
+                     {{-- リクエストしたプランのうち、承認済みである場合 --}}
+                         @elseif( $request_plan->request_user_id == $user->id && $request_plan->plan_status == "approved")
+                             <p>　申込み済です</p>
+                         
+                         @else
+                             {!! Form::open(['route' => ['request_plan.store']]) !!}
+                                 {{Form::hidden('knowledge_id', $knowledge->knowledge_id)}}
+                                 <div class="form-group">
+                                    <div class="request_message">{!! Form::label('request_message','メッセージを入力し申込む' )!!}</div>
+                                    <a>{!! Form::textarea('request_message',null,['class' => 'form-control']) !!}</a>
+                                </div>
+                                 <div class="mousikomi">{!! Form::submit('申込む', ['class' => 'btn btn-secondary']) !!}</div>
+                             {!!Form::close() !!}
+                         @endif
+                    
+                    
+                {{-- 自分のプランの場合 編集画面へ --}}
+                    
+                    @if($user->id == $knowledge->user_id)
+                      <p>　自分のプランです</p>
+                        <div class="edit">{!! link_to_route('knowledges.edit','このプランを編集', ['knowledge_id' => $knowledge->knowledge_id], ['class' => 'btn btn-secondary']) !!}</div>
+                        {!! Form::model($knowledge, ['route' => ['knowledges.destroy', $knowledge->knowledge_id], 'method' => 'delete']) !!}
+                        {{--<div class="delete">{!! Form::submit('削除する', ['class' => 'btn btn-danger']) !!}</div>--}}
                         {!! Form::close() !!}
-                    </div>
-                
-            
-            </div>
-            <div class="right">b</div>
-        </main>
+                    @endif
+             
+            </div>  
+        </div>
         
-         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-        <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"></script>
-    </body>
+@endsection
+
         

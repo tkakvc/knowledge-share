@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Knowledge;
+use App\Chat;
+use App\Request_plan;
 
 class UsersController extends Controller
 {
